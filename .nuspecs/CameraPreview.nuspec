@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>CameraPreview</id>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
     <title>CameraPreview</title>
     <authors>Jesse Jiang</authors>
     <owners>Jesse Jiang</owners>
@@ -18,6 +18,6 @@ First Release
   <files>
     <file src="..\Source\CameraPreview\bin\Release\netstandard2.0\CameraPreview*.*" target="lib\netstandard2.0" />    
     <file src="..\Source\CameraPreview.iOS\bin\Release\CameraPreview*.*" target="lib\Xamarin.iOS10" />
-    <file src="..\Source\CameraPreview.Droid\bin\Release\CameraPreview*.*" target="lib\MonoAndroid10" />
+    <file src="..\Source\CameraPreview.Droid\bin\Release\CameraPreview*.*" target="lib\MonoAndroid81" />
   </files>
 </package>
