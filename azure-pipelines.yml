@@ -1,7 +1,4 @@
 # https://docs.microsoft.com/vsts/pipelines/languages/xamarin
-variables:
-  buildConfiguration: 'Release'
-
 jobs:
 - job: Android
   pool:
@@ -32,8 +29,7 @@ jobs:
       restoreSolution: 'CameraPreview.sln'
   - task: XamariniOS@2
     inputs:
-      projectFile: 'Source/CameraPreview.iOS/CameraPreview.iOS.csproj'
+      solutionFile: 'CameraPreview.sln'
       configuration: '$(buildConfiguration)'
-      outputDirectory: '$(outputDirectory)'
       buildForSimulator: false
       packageApp: false
