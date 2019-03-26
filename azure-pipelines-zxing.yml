@@ -1,0 +1,27 @@
+queue:
+  name: Hosted macOS
+  demands: msbuild
+
+variables:
+  BuildConfiguration: 'Release'
+
+steps:
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: CameraPreview.ZXing.sln
+
+- task: MSBuild@1
+  displayName: 'Build project ZXing plugins for CameraPrevew'
+  inputs:
+    solution: CameraPreview.ZXing.sln
+    msbuildArchitecture: x64
+    configuration: '$(BuildConfiguration)'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet pack'
+  inputs:
+    command: pack
+    packagesToPack: .nuspecs/CameraPreview.Plugins.ZXing.nuspec
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
