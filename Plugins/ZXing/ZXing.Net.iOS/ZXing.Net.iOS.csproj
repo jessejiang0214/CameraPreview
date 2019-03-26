@@ -49,8 +49,8 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="zxing">
-      <HintPath>..\..\packages\ZXing.Net.0.16.4\lib\netstandard2.0\zxing.dll</HintPath>
-    </Reference>    
+      <HintPath>..\..\..\packages\ZXing.Net.0.16.4\lib\netstandard2.0\zxing.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraPreviewSettingsForZXing.cs" />
@@ -59,17 +59,17 @@
     <Compile Include="CVPixelBufferBGRA32LuminanceSource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\CameraPreview.iOS\CameraPreview.iOS.csproj">
-      <Project>{547CB727-881C-43B7-864E-AEAC7ED5EFDC}</Project>
-      <Name>CameraPreview.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Source\CameraPreview\CameraPreview.csproj">
-      <Project>{0B7CD4F3-4180-46E3-B107-0CBCC992E352}</Project>
-      <Name>CameraPreview</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
       <Project>{DB30E219-570E-4E58-B8D2-7BD9B3B926BD}</Project>
       <Name>ZXing.Net.Xamarin.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\CameraPreview\CameraPreview.csproj">
+      <Project>{0B7CD4F3-4180-46E3-B107-0CBCC992E352}</Project>
+      <Name>CameraPreview</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\CameraPreview.iOS\CameraPreview.iOS.csproj">
+      <Project>{547CB727-881C-43B7-864E-AEAC7ED5EFDC}</Project>
+      <Name>CameraPreview.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

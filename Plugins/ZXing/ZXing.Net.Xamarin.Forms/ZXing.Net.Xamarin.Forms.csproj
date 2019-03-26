@@ -12,6 +12,6 @@
     <Compile Remove="MainPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\CameraPreview\CameraPreview.csproj" />
+    <ProjectReference Include="..\..\..\Source\CameraPreview\CameraPreview.csproj" />
   </ItemGroup>
 </Project>
