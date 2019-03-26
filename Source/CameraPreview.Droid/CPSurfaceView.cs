@@ -103,7 +103,6 @@ namespace CameraPreview.Droid
 
         private CameraAnalyzer _cameraAnalyzer;
         public CameraAnalyzer CameraAnalyzer => _cameraAnalyzer;
-        private bool _surfaceCreated;
 
         protected override void OnAttachedToWindow()
         {

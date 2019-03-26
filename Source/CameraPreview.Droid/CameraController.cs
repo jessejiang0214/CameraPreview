@@ -214,7 +214,8 @@ namespace CameraPreview.Droid
             {
                 // Currently an NPE is thrown when the Camera2API is used but not supported on the
                 // device this code runs.
-                //ErrorDialog.NewInstance(GetString(Resource.String.camera_error)).Show(ChildFragmentManager, FRAGMENT_DIALOG);
+                e.PrintStackTrace();
+                throw new RuntimeException("Don't have access to Camera!");
             }
         }
 
