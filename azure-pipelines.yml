@@ -21,4 +21,4 @@ steps:
   displayName: 'NuGet pack'
   inputs:
     command: pack
-    arguments: .nuspecs/CameraPreview.nuspec
+    packagesToPack: .nuspecs/CameraPreview.nuspec
