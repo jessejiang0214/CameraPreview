@@ -6,18 +6,19 @@
     <title>CameraPreview ZXing Plugins</title>
     <authors>Jesse Jiang</authors>
     <owners>Jesse Jiang</owners>
-    <projectUrl>https://github.com/jessejiang0214/CameraPreview</projectUrl>
+    <projectUrl>https://github.com/jessejiang0214/CameraPreview/tree/master/Plugins/ZXing</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>ZXing plugins for CameraPreview</description>
     <tags>Xamarin, Xamarin.Forms, CameraPreview, ZXing, BarCodes</tags>
+    <dependencies>
+        <dependency id="CameraPreview" version="1.0.0.1" />
+        <dependency id="ZXing.Net" version="0.16.4" />
+    </dependencies>     
     <releaseNotes>
 1.0.0.1
 First Release
     </releaseNotes>
   </metadata>
-  <dependencies>
-    <dependency id="CameraPreview" version="1.0.0.1" />
-  </dependencies>     
   <files>
     <file src="..\Plugins\ZXing\ZXing.Net.Xamarin.Forms\bin\Release\netstandard2.0\ZXing.Net*.*" target="lib\netstandard2.0" />    
     <file src="..\Plugins\ZXing\ZXing.Net.iOS\bin\Release\ZXing.Net*.*" target="lib\Xamarin.iOS10" />
