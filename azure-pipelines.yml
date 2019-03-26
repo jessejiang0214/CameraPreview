@@ -6,6 +6,9 @@ variables:
   BuildConfiguration: 'Release'
 
 steps:
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: CameraPreview.sln
 
 - task: MSBuild@1
   displayName: 'Build project CameraPrevew'
