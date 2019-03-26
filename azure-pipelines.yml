@@ -14,7 +14,11 @@ steps:
   displayName: 'Build project CameraPrevew'
   inputs:
     solution: CameraPreview.sln
-
     msbuildArchitecture: x64
-
     configuration: '$(BuildConfiguration)'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet pack'
+  inputs:
+    command: pack
+    arguments: .nuspecs/CameraPreview.nuspec
