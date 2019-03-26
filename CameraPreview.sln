@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraPreview", "Source\CameraPreview\CameraPreview.csproj", "{0B7CD4F3-4180-46E3-B107-0CBCC992E352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraPreview.iOS", "Source\CameraPreview.iOS\CameraPreview.iOS.csproj", "{547CB727-881C-43B7-864E-AEAC7ED5EFDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraPreview.Droid", "Source\CameraPreview.Droid\CameraPreview.Droid.csproj", "{5A93A54A-7036-4C38-9F63-60FA3B3B0C23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B7CD4F3-4180-46E3-B107-0CBCC992E352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B7CD4F3-4180-46E3-B107-0CBCC992E352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B7CD4F3-4180-46E3-B107-0CBCC992E352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B7CD4F3-4180-46E3-B107-0CBCC992E352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{547CB727-881C-43B7-864E-AEAC7ED5EFDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{547CB727-881C-43B7-864E-AEAC7ED5EFDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{547CB727-881C-43B7-864E-AEAC7ED5EFDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{547CB727-881C-43B7-864E-AEAC7ED5EFDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A93A54A-7036-4C38-9F63-60FA3B3B0C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A93A54A-7036-4C38-9F63-60FA3B3B0C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A93A54A-7036-4C38-9F63-60FA3B3B0C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A93A54A-7036-4C38-9F63-60FA3B3B0C23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
