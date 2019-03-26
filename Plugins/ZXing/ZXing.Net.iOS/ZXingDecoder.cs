@@ -25,7 +25,18 @@ namespace ZXing.Net.iOS
                 int height = (int)pixelBuffer.Height;
                 var luminanceSource = new CVPixelBufferBGRA32LuminanceSource(rawData, rawDatalen, width, height);
                 var res = _reader.Decode(luminanceSource);
-                var result = new ZXingResult(res);
+                var result = new ZXingResult();
+                if (res == null)
+                {
+                    result.Success = false;
+                    result.Timestamp = DateTime.Now.Ticks;
+                }
+                else
+                {
+                    result.Success = true;
+                    result.Timestamp = res.Timestamp;
+                    result.Text = res.Text;
+                }
                 PerformanceCounter.Stop(decoder, "ZXing Decoder take {0} ms.");
                 return result;
             }
@@ -34,7 +45,22 @@ namespace ZXing.Net.iOS
         public override void ScanningOptionsUpdate(ScanningOptionsBase options)
         {
             if (options is ZXingOptions zOpt)
-                _reader = zOpt.BuildBarcodeReader();
+            {
+                if (zOpt.TryHarder.HasValue)
+                    _reader.Options.TryHarder = zOpt.TryHarder.Value;
+                if (zOpt.PureBarcode.HasValue)
+                    _reader.Options.PureBarcode = zOpt.PureBarcode.Value;
+                if (zOpt.AutoRotate.HasValue)
+                    _reader.AutoRotate = zOpt.AutoRotate.Value;
+                if (zOpt.UseCode39ExtendedMode.HasValue)
+                    _reader.Options.UseCode39ExtendedMode = zOpt.UseCode39ExtendedMode.Value;
+                if (!string.IsNullOrEmpty(zOpt.CharacterSet))
+                    _reader.Options.CharacterSet = zOpt.CharacterSet;
+                if (zOpt.TryInverted.HasValue)
+                    _reader.TryInverted = zOpt.TryInverted.Value;
+                if (zOpt.AssumeGS1.HasValue)
+                    _reader.Options.AssumeGS1 = zOpt.AssumeGS1.Value;
+            }
         }
     }
 }
