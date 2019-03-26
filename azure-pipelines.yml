@@ -1,0 +1,35 @@
+# https://docs.microsoft.com/vsts/pipelines/languages/xamarin
+jobs:
+- job: Android
+  pool:
+    vmImage: 'vs2017-win2016'
+  variables:
+    buildConfiguration: 'Release'
+    outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+  steps:
+  - task: NuGetToolInstaller@0
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: 'CameraPreview.sln'
+  - task: XamarinAndroid@1
+    inputs:
+      projectFile: 'Source/CameraPreview.Droid/CameraPreview.Droid.csproj'
+      outputDirectory: '$(outputDirectory)'
+      configuration: '$(buildConfiguration)'
+
+- job: iOS
+  pool:
+    vmImage: 'macOS-10.13'
+  variables:
+    buildConfiguration: 'Release'
+  steps:
+  - task: NuGetToolInstaller@0
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: 'CameraPreview.sln'
+  - task: XamariniOS@2
+    inputs:
+      solutionFile: 'Source/CameraPreview.iOS/CameraPreview.iOS.csproj'
+      configuration: '$(buildConfiguration)'
+      buildForSimulator: false
+      packageApp: false
