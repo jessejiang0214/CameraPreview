@@ -64,11 +64,11 @@
       <Name>CameraPreview.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Source\CameraPreview\CameraPreview.csproj">
-      <Project>{39D1D7F1-BA1B-4129-96FC-40F6858F4807}</Project>
+      <Project>{0B7CD4F3-4180-46E3-B107-0CBCC992E352}</Project>
       <Name>CameraPreview</Name>
     </ProjectReference>
     <ProjectReference Include="..\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
-      <Project>{9EC04B54-52AD-44A9-864E-4D6FB7EB81AE}</Project>
+      <Project>{DB30E219-570E-4E58-B8D2-7BD9B3B926BD}</Project>
       <Name>ZXing.Net.Xamarin.Forms</Name>
     </ProjectReference>
   </ItemGroup>

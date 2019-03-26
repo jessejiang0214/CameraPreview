@@ -6,7 +6,7 @@
     <title>CameraPreview</title>
     <authors>Jesse Jiang</authors>
     <owners>Jesse Jiang</owners>
-    <projectUrl>https://github.com/</projectUrl>
+    <projectUrl>https://github.com/jessejiang0214/CameraPreview</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Easily Create camera perview feature in Xamarin.Forms</description>
     <tags>Xamarin, Xamarin.Forms, CameraPreview</tags>

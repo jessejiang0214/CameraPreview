@@ -17,11 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{969DA6FB-B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{F706413F-11E5-40C9-93D5-C9796A9F3BE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXing.Net.iOS", "Plugins\ZXing.Net.iOS\ZXing.Net.iOS.csproj", "{A51AB29C-0727-4A81-B956-418C58D226BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXing.Net.iOS", "Plugins\ZXing\ZXing.Net.iOS\ZXing.Net.iOS.csproj", "{A51AB29C-0727-4A81-B956-418C58D226BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXing.Net.Droid", "Plugins\ZXing.Net.Droid\ZXing.Net.Droid.csproj", "{9D09A198-7A51-479F-A1F4-8A14D6EEF5F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXing.Net.Droid", "Plugins\ZXing\ZXing.Net.Droid\ZXing.Net.Droid.csproj", "{9D09A198-7A51-479F-A1F4-8A14D6EEF5F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXing.Net.Xamarin.Forms", "Plugins\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj", "{9EC04B54-52AD-44A9-864E-4D6FB7EB81AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXing.Net.Xamarin.Forms", "Plugins\ZXing\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj", "{9EC04B54-52AD-44A9-864E-4D6FB7EB81AE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZXing", "ZXing", "{145E9E41-5573-48F3-AC15-9F272DE51409}"
 EndProject

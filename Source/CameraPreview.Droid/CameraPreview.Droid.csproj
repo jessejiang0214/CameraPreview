@@ -200,7 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CameraPreview\CameraPreview.csproj">
-      <Project>{8D2C1A2A-231A-453C-A082-DB30C70A950E}</Project>
+      <Project>{0B7CD4F3-4180-46E3-B107-0CBCC992E352}</Project>
       <Name>CameraPreview</Name>
     </ProjectReference>
   </ItemGroup>
