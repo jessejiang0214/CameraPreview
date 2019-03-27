@@ -72,8 +72,9 @@ namespace Sample
             if (!await CheckCameraPermisstions())
                 return;
             var options = new ScanningOptionsBase();
-            scanPage = new ScannerPage(options, null);
-
+            var overlay = new VisionOverlay();
+            scanPage = new ScannerPage(options, overlay);
+            scanPage.OnScanResult += overlay.GetScanResult;
             await Navigation.PushAsync(scanPage);
         }
     }

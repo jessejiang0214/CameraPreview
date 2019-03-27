@@ -5,6 +5,6 @@
         Spacing="20">
 		<!-- Place new controls here -->
 		<Button Text="Test ZXing scanner view" Clicked="Default_ZXing_Clicked" />
-        <!--<Button Text="Test Vision scanner view" Clicked="Default_Vision_Clicked" />-->
+        <Button Text="Test Vision scanner view" Clicked="Default_Vision_Clicked" />
 	</StackLayout>
 </ContentPage>

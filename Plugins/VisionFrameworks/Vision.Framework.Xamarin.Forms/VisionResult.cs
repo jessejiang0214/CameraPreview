@@ -11,6 +11,9 @@ namespace Vision.Framework.Xamarin.Forms
         public bool Success { get; set; }
 
         public IList<BarCodeResult> Results { get; set; }
+
+        public int ImageWidth { get; set; }
+        public int ImageHeight { get; set; }
     }
 
     public struct BarCodeResult

@@ -25,7 +25,8 @@ namespace Sample.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
             //CameraPreview.iOS.CameraPreviewSettings.Instance.Init();
-            ZXing.Net.iOS.CameraPreviewSettingsForZXing.Init();
+            //ZXing.Net.iOS.CameraPreviewSettingsForZXing.Init();
+            Vision.Framework.iOS.CameraPreviewSettingsForVisionBarCode.Init();
             return base.FinishedLaunching(app, options);
         }
     }
