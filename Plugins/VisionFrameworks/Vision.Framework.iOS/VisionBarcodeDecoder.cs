@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CameraPreview;
 using CameraPreview.iOS;
-using CoreFoundation;
 using CoreVideo;
 using Foundation;
-using ZXing.Net.Xamarin.Forms;
+using Vision.Framework.Xamarin.Forms;
 
 namespace Vision.Framework.iOS
 {
@@ -22,7 +22,6 @@ namespace Vision.Framework.iOS
         public override IScanResult Decode(CVPixelBuffer pixelBuffer)
         {
             var decoder = PerformanceCounter.Start();
-            Logger.Log("Decode start");
             _barcodeResult = new TaskCompletionSource<IScanResult>();
             var handler = new VNImageRequestHandler(pixelBuffer, new VNImageOptions());
             handler.Perform(new VNRequest[] { barcodesRequest }, out NSError error);
@@ -33,18 +32,32 @@ namespace Vision.Framework.iOS
 
         void HandleBarCodes(VNRequest request, NSError error)
         {
-            Logger.Log("Decode get response");
             if (error != null)
             {
                 _barcodeResult.SetException(new NSErrorException(error));
                 return;
             }
             var observations = request.GetResults<VNBarcodeObservation>();
-            var result = new ZXingResult();
+            var result = new VisionBarCodeResult();
             result.Success = true;
             result.Timestamp = DateTime.Now.Ticks;
-            if (observations.Any())
-                result.Text = observations.First().PayloadStringValue;
+            foreach (var o in observations)
+            {
+                if (result.Results == null)
+                {
+                    result.Results = new List<BarCodeResult>();
+                }
+                var res = new BarCodeResult
+                {
+                    Text = o.PayloadStringValue,
+                    X = o.TopLeft.X,
+                    Y = o.TopLeft.Y,
+                    Width = o.TopRight.X - o.TopLeft.X,
+                    Height = o.BottomLeft.Y - o.TopLeft.Y,
+                };
+                result.Results.Add(res);
+                Logger.Log($"Found bar code {res.Text} {res.X} {res.Y} {res.Width} {res.Height}");
+            }
             _barcodeResult.SetResult(result);
         }
 

@@ -87,3 +87,7 @@ And call this instead of ```CameraPreviewSettings.Instance.Init(null);```
 
 ## Thanks
 CameraPreview project is based on [ZXing.Net.Mobile](https://github.com/Redth/ZXing.Net.Mobile), [ZXing.Net](https://github.com/micjahn/ZXing.Net) and [ZXing](https://github.com/zxing/zxing), thanks for them.
+
+
+## Buy me a coffee
+[Via Paypal](https://www.paypal.me/jessejiang0214)

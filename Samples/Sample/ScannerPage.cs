@@ -8,7 +8,6 @@ namespace Sample
     public class ScannerPage : ContentPage
     {
         ScannerView _scannerView;
-        ZXingOverlay defaultOverlay = null;
 
         public ScannerPage(ScanningOptionsBase options = null, View customOverlay = null) : base()
         {
@@ -28,30 +27,21 @@ namespace Sample
                 this.OnScanResult?.Invoke(result);
             };
 
-            if (customOverlay == null)
-            {
-                defaultOverlay = new ZXingOverlay() { };
 
-                defaultOverlay.SetBinding(ZXingOverlay.TopTextProperty, new Binding(nameof(DefaultOverlayTopText)));
-                defaultOverlay.SetBinding(ZXingOverlay.BottomTextProperty, new Binding(nameof(DefaultOverlayBottomText)));
-
-                DefaultOverlayTopText = "Hold your phone up to the barcode";
-                DefaultOverlayBottomText = "Scanning will happen automatically";
-
-                Overlay = defaultOverlay;
-            }
-            else
-            {
-                Overlay = customOverlay;
-            }
 
             var grid = new Grid
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
+
             grid.Children.Add(_scannerView);
-            grid.Children.Add(Overlay);
+
+            if (customOverlay != null)
+            {
+                Overlay = customOverlay;
+                grid.Children.Add(Overlay);
+            }
 
             // The root page of your application
             Content = grid;

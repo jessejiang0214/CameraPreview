@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CameraPreview;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using Vision.Framework.Xamarin.Forms;
 using Xamarin.Forms;
 using ZXing.Net.Xamarin.Forms;
 
@@ -19,7 +20,7 @@ namespace Sample
             InitializeComponent();
         }
 
-        async void Default_Scanner_Handle_Clicked(object sender, System.EventArgs e)
+        async Task<bool> CheckCameraPermisstions()
         {
             var mediaPlugin = Plugin.Media.CrossMedia.Current;
             await mediaPlugin.Initialize();
@@ -27,7 +28,7 @@ namespace Sample
             if (!mediaPlugin.IsCameraAvailable || !mediaPlugin.IsTakePhotoSupported)
             {
                 await DisplayAlert("No Camera", ":( No camera available.", "OK");
-                return;
+                return false;
             }
 
             var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
@@ -41,9 +42,16 @@ namespace Sample
             if (cameraStatus != PermissionStatus.Granted)
             {
                 await DisplayAlert("Permissions Denied", "Unable to take photos.", "OK");
-                return;
+                return false;
             }
+            return true;
+        }
 
+        async void Default_ZXing_Clicked(object sender, System.EventArgs e)
+        {
+
+            if (!await CheckCameraPermisstions())
+                return;
             var overLay = new ZXingOverlay();
             var options = new ZXingOptions();
             scanPage = new ScannerPage(options, overLay);
@@ -54,6 +62,17 @@ namespace Sample
                     Logger.Log($"Found bar code {zResult.Text}");
                 }
             };
+
+            await Navigation.PushAsync(scanPage);
+        }
+
+
+        async void Default_Vision_Clicked(object sender, System.EventArgs e)
+        {
+            if (!await CheckCameraPermisstions())
+                return;
+            var options = new ScanningOptionsBase();
+            scanPage = new ScannerPage(options, null);
 
             await Navigation.PushAsync(scanPage);
         }
