@@ -15,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Source\CameraPreview\CameraPreview.csproj" />
-    <ProjectReference Include="..\..\Plugins\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj" />
+    <ProjectReference Include="..\..\Plugins\ZXing\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj" />
     <PackageReference Include="Plugin.Permissions" Version="3.0.0.12" />
   </ItemGroup>
 </Project>

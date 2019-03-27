@@ -109,11 +109,11 @@
       <Project>{39D1D7F1-BA1B-4129-96FC-40F6858F4807}</Project>
       <Name>CameraPreview</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\ZXing.Net.Droid\ZXing.Net.Droid.csproj">
+    <ProjectReference Include="..\..\Plugins\ZXing\ZXing.Net.Droid\ZXing.Net.Droid.csproj">
       <Project>{9D09A198-7A51-479F-A1F4-8A14D6EEF5F6}</Project>
       <Name>ZXing.Net.Droid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
+    <ProjectReference Include="..\..\Plugins\ZXing\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
       <Project>{9EC04B54-52AD-44A9-864E-4D6FB7EB81AE}</Project>
       <Name>ZXing.Net.Xamarin.Forms</Name>
     </ProjectReference>
