@@ -46,7 +46,6 @@ namespace Sample
 
             var overLay = new ZXingOverlay();
             var options = new ZXingOptions();
-            options.PossibleFormats.Add(ZXing.BarcodeFormat.QR_CODE);
             scanPage = new ScannerPage(options, overLay);
             scanPage.OnScanResult += (result) =>
             {
