@@ -8,7 +8,7 @@ This is a plugins for [CameraPrview](https://github.com/jessejiang0214/CameraPre
 ## Usage
 Check this [Sample](https://github.com/jessejiang0214/CameraPreview/tree/master/Samples) to use it.
 
-You can use default overly ```ZXingOverlay`` or create your own one.
+You can use default overly ```ZXingOverlay``` or create your own one.
 
 ## Setup
 This project assumes you already get the permission of the camera and init the Camera, so if you didn't get the permission of the camera, it will throw an exception. You can use [MediaPlugin](https://github.com/jamesmontemagno/MediaPlugin) to help you get the permissions.
