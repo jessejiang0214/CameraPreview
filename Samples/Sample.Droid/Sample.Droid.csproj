@@ -15,7 +15,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -57,8 +57,8 @@
     <PackageReference Include="Xam.Plugin.Media">
       <Version>4.0.1.5</Version>
     </PackageReference>
-    <PackageReference Include="ZXing.Net">
-      <Version>0.16.4</Version>
+    <PackageReference Include="Plugin.Permissions">
+      <Version>3.0.0.12</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -109,11 +109,11 @@
       <Project>{39D1D7F1-BA1B-4129-96FC-40F6858F4807}</Project>
       <Name>CameraPreview</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\ZXing.Net.Droid\ZXing.Net.Droid.csproj">
+    <ProjectReference Include="..\..\Plugins\ZXing\ZXing.Net.Droid\ZXing.Net.Droid.csproj">
       <Project>{9D09A198-7A51-479F-A1F4-8A14D6EEF5F6}</Project>
       <Name>ZXing.Net.Droid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
+    <ProjectReference Include="..\..\Plugins\ZXing\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
       <Project>{9EC04B54-52AD-44A9-864E-4D6FB7EB81AE}</Project>
       <Name>ZXing.Net.Xamarin.Forms</Name>
     </ProjectReference>

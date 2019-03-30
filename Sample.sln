@@ -25,9 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZXing.Net.Xamarin.Forms", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZXing", "ZXing", "{145E9E41-5573-48F3-AC15-9F272DE51409}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisionBarCode", "VisionBarCode", "{AB7FDBDF-05C1-45BB-A883-47F661CA3870}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisionFrameworks", "VisionFrameworks", "{AB7FDBDF-05C1-45BB-A883-47F661CA3870}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vision.Framework.iOS", "Plugins\Vision.Framework.iOS\Vision.Framework.iOS.csproj", "{2C1D1DA3-74B6-47DD-9EF8-A0EC0417EBA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vision.Framework.iOS", "Plugins\VisionFrameworks\Vision.Framework.iOS\Vision.Framework.iOS.csproj", "{2C1D1DA3-74B6-47DD-9EF8-A0EC0417EBA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vising.Framework.Xamarin.Forms", "Plugins\VisionFrameworks\Vision.Framework.Xamarin.Forms\Vising.Framework.Xamarin.Forms.csproj", "{454FBD9F-EA87-487B-8D21-96BD4A1377BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -201,6 +203,22 @@ Global
 		{2C1D1DA3-74B6-47DD-9EF8-A0EC0417EBA7}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
 		{2C1D1DA3-74B6-47DD-9EF8-A0EC0417EBA7}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
 		{2C1D1DA3-74B6-47DD-9EF8-A0EC0417EBA7}.AppStore|iPhone.Build.0 = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Release|iPhone.Build.0 = Release|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF}.AppStore|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{39D1D7F1-BA1B-4129-96FC-40F6858F4807} = {969DA6FB-B4AD-4FBB-A909-D6B2584418C1}
@@ -212,5 +230,6 @@ Global
 		{145E9E41-5573-48F3-AC15-9F272DE51409} = {F706413F-11E5-40C9-93D5-C9796A9F3BE7}
 		{AB7FDBDF-05C1-45BB-A883-47F661CA3870} = {F706413F-11E5-40C9-93D5-C9796A9F3BE7}
 		{2C1D1DA3-74B6-47DD-9EF8-A0EC0417EBA7} = {AB7FDBDF-05C1-45BB-A883-47F661CA3870}
+		{454FBD9F-EA87-487B-8D21-96BD4A1377BF} = {AB7FDBDF-05C1-45BB-A883-47F661CA3870}
 	EndGlobalSection
 EndGlobal

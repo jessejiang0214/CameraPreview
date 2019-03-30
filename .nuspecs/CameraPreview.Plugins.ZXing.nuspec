@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>CameraPreview.Plugins.ZXing</id>
-    <version>1.0.0.2</version>
+    <version>1.0.0.1</version>
     <title>CameraPreview ZXing Plugins</title>
     <authors>Jesse Jiang</authors>
     <owners>Jesse Jiang</owners>
@@ -12,7 +12,7 @@
     <tags>Xamarin, Xamarin.Forms, CameraPreview, ZXing, BarCodes</tags>
     <dependencies>
         <dependency id="CameraPreview" version="1.0.0.1" />
-        <dependency id="ZXing.Net" version="0.16.4" />
+        <dependency id="ZXing.Net" version="0.16.4" />        
     </dependencies>     
     <releaseNotes>
 1.0.0.1
@@ -21,7 +21,7 @@ First Release
   </metadata>
   <files>
     <file src="..\Plugins\ZXing\ZXing.Net.Xamarin.Forms\bin\Release\netstandard2.0\ZXing.Net*.*" target="lib\netstandard2.0" />    
-    <file src="..\Plugins\ZXing\ZXing.Net.iOS\bin\Release\ZXing.Net.iOS*.*" target="lib\Xamarin.iOS10" />
-    <file src="..\Plugins\ZXing\ZXing.Net.Droid\bin\Release\ZXing.Net.Droid*.*" target="lib\MonoAndroid81" />
+    <file src="..\Plugins\ZXing\ZXing.Net.iOS\bin\Release\ZXing.Net*.*" target="lib\Xamarin.iOS10" />
+    <file src="..\Plugins\ZXing\ZXing.Net.Droid\bin\Release\ZXing.Net*.*" target="lib\MonoAndroid81" />
   </files>
 </package>

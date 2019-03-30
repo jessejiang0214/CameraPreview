@@ -1,4 +1,5 @@
 ﻿using System;
+using CameraPreview;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +11,7 @@ namespace Sample
         public App()
         {
             InitializeComponent();
-
+            Logger.Instance.LoggerObj = new LoggerImplement();
             MainPage = new NavigationPage(new MainPage());
         }
 

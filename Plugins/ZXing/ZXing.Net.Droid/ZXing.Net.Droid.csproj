@@ -37,29 +37,31 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="zxing">
-      <HintPath>..\..\..\packages\ZXing.Net.0.16.4\lib\netstandard2.0\zxing.dll</HintPath>
+    <Reference Include="zxing.monoandroid">
+      <HintPath>..\..\..\packages\ZXing.Net.0.16.4\lib\MonoAndroid\zxing.monoandroid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>    
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZXingDecoder.cs" />
     <Compile Include="CameraPreviewSettingsForZXing.cs" />
-    <Compile Include="BitmapLuminanceSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
-      <Project>{DB30E219-570E-4E58-B8D2-7BD9B3B926BD}</Project>
+      <Project>{9EC04B54-52AD-44A9-864E-4D6FB7EB81AE}</Project>
       <Name>ZXing.Net.Xamarin.Forms</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Source\CameraPreview\CameraPreview.csproj">
-      <Project>{0B7CD4F3-4180-46E3-B107-0CBCC992E352}</Project>
+      <Project>{39D1D7F1-BA1B-4129-96FC-40F6858F4807}</Project>
       <Name>CameraPreview</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Source\CameraPreview.Droid\CameraPreview.Droid.csproj">
       <Project>{5A93A54A-7036-4C38-9F63-60FA3B3B0C23}</Project>
       <Name>CameraPreview.Droid</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />  
   <Import Project="..\..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />

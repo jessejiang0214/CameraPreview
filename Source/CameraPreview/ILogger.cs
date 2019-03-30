@@ -3,7 +3,7 @@ namespace CameraPreview
 {
     public interface ILogger
     {
-        void Log(string message, LogLevel leve);
+        void Log(string message, LogLevel level);
     }
 
     public enum LogLevel

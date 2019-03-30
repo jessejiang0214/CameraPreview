@@ -164,13 +164,21 @@
       <Project>{39D1D7F1-BA1B-4129-96FC-40F6858F4807}</Project>
       <Name>CameraPreview</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\ZXing.Net.iOS\ZXing.Net.iOS.csproj">
+    <ProjectReference Include="..\..\Plugins\ZXing\ZXing.Net.iOS\ZXing.Net.iOS.csproj">
       <Project>{A51AB29C-0727-4A81-B956-418C58D226BC}</Project>
       <Name>ZXing.Net.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugins\Vision.Framework.iOS\Vision.Framework.iOS.csproj">
+    <ProjectReference Include="..\..\Plugins\ZXing\ZXing.Net.Xamarin.Forms\ZXing.Net.Xamarin.Forms.csproj">
+      <Project>{9EC04B54-52AD-44A9-864E-4D6FB7EB81AE}</Project>
+      <Name>ZXing.Net.Xamarin.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\VisionFrameworks\Vision.Framework.iOS\Vision.Framework.iOS.csproj">
       <Project>{2C1D1DA3-74B6-47DD-9EF8-A0EC0417EBA7}</Project>
       <Name>Vision.Framework.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\VisionFrameworks\Vision.Framework.Xamarin.Forms\Vising.Framework.Xamarin.Forms.csproj">
+      <Project>{454FBD9F-EA87-487B-8D21-96BD4A1377BF}</Project>
+      <Name>Vising.Framework.Xamarin.Forms</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
