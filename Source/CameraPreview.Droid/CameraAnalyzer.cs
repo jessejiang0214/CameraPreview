@@ -10,7 +10,8 @@ namespace CameraPreview.Droid
         private DateTime _lastPreviewAnalysis = DateTime.UtcNow;
         private bool _wasScanned;
         private bool _cameraSetup;
-        private IDecoder _decoder;
+        private readonly IDecoder _decoder;
+
         public CameraAnalyzer(CPSurfaceView surfaceView)
         {
             _cameraController = new CameraController(surfaceView);
