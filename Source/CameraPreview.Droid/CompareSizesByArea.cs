@@ -5,6 +5,10 @@ namespace CameraPreview.Droid
 {
     public class CompareSizesByArea : Java.Lang.Object, IComparator
     {
+        public CompareSizesByArea()
+        {
+        }
+
         public int Compare(Java.Lang.Object lhs, Java.Lang.Object rhs)
         {
             var lhsSize = (Size) lhs;
