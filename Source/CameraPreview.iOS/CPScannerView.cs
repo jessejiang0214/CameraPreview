@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using AVFoundation;
 using CoreFoundation;
 using CoreGraphics;
-using CoreMedia;
 using CoreVideo;
 using Foundation;
 using ObjCRuntime;
@@ -14,36 +12,37 @@ using UIKit;
 
 namespace CameraPreview.iOS
 {
-    public class CPScannerView : UIView
+    public class CpScannerView : UIView
     {
         public delegate void ScannerSetupCompleteDelegate();
+
         public event ScannerSetupCompleteDelegate OnScannerSetupComplete;
 
-        AVCaptureSession session;
-        AVCaptureVideoPreviewLayer previewLayer;
-        AVCaptureVideoDataOutput output;
-        IOutputRecorder outputRecorder;
-        DispatchQueue queue;
-        Action<IScanResult> resultCallback;
-        volatile bool stopped = true;
+        private AVCaptureSession _session;
+        private AVCaptureVideoPreviewLayer _previewLayer;
+        private AVCaptureVideoDataOutput _output;
+        private IOutputRecorder _outputRecorder;
+        private DispatchQueue _queue;
+        private Action<IScanResult> _resultCallback;
+        private volatile bool _stopped = true;
 
-        UIView layerView;
+        private UIView _layerView;
 
         public string CancelButtonText { get; set; }
         public string FlashButtonText { get; set; }
 
-        bool shouldRotatePreviewBuffer = false;
+        private bool _shouldRotatePreviewBuffer = false;
 
-        void Setup(CGRect frame)
+        private static void Setup(CGRect frame)
         {
             var started = DateTime.UtcNow;
             var total = DateTime.UtcNow - started;
             Logger.Log($"CPScannerView.Setup() took {total.TotalMilliseconds} ms.");
         }
 
-        bool analyzing = true;
+        private bool _analyzing = true;
 
-        bool SetupCaptureSession()
+        private bool SetupCaptureSession()
         {
             if (CameraPreviewSettings.Instance.Decoder == null)
                 return false;
@@ -52,17 +51,18 @@ namespace CameraPreview.iOS
 
             var availableResolutions = new List<CameraResolution>();
 
-            var consideredResolutions = new Dictionary<NSString, CameraResolution> {
-                { AVCaptureSession.Preset352x288, new CameraResolution   { Width = 352,  Height = 288 } },
-                { AVCaptureSession.PresetMedium, new CameraResolution    { Width = 480,  Height = 360 } },  //480x360
-                { AVCaptureSession.Preset640x480, new CameraResolution   { Width = 640,  Height = 480 } },
-                { AVCaptureSession.Preset1280x720, new CameraResolution  { Width = 1280, Height = 720 } },
-                { AVCaptureSession.Preset1920x1080, new CameraResolution { Width = 1920, Height = 1080 } }
+            var consideredResolutions = new Dictionary<NSString, CameraResolution>
+            {
+                {AVCaptureSession.Preset352x288, new CameraResolution {Width = 352, Height = 288}},
+                {AVCaptureSession.PresetMedium, new CameraResolution {Width = 480, Height = 360}}, //480x360
+                {AVCaptureSession.Preset640x480, new CameraResolution {Width = 640, Height = 480}},
+                {AVCaptureSession.Preset1280x720, new CameraResolution {Width = 1280, Height = 720}},
+                {AVCaptureSession.Preset1920x1080, new CameraResolution {Width = 1920, Height = 1080}}
             };
 
             // configure the capture session for low resolution, change this if your code
             // can cope with more data or volume
-            session = new AVCaptureSession()
+            _session = new AVCaptureSession()
             {
                 SessionPreset = AVCaptureSession.Preset640x480
             };
@@ -80,10 +80,11 @@ namespace CameraPreview.iOS
 
                     break; //Front camera successfully set
                 else if (device.Position == AVCaptureDevicePosition.Back &&
-                       (!CameraPreviewSettings.Instance.ScannerOptions.UseFrontCameraIfAvailable.HasValue
-                        || !CameraPreviewSettings.Instance.ScannerOptions.UseFrontCameraIfAvailable.Value))
-                    break; //Back camera succesfully set
+                         (!CameraPreviewSettings.Instance.ScannerOptions.UseFrontCameraIfAvailable.HasValue
+                          || !CameraPreviewSettings.Instance.ScannerOptions.UseFrontCameraIfAvailable.Value))
+                    break; //Back camera successfully set
             }
+
             if (captureDevice == null)
             {
                 Console.WriteLine("No captureDevice - this won't work on the simulator, try a physical device");
@@ -109,13 +110,13 @@ namespace CameraPreview.iOS
             {
                 // Now get the preset string from the resolution chosen
                 var preset = (from c in consideredResolutions
-                              where c.Value.Width == resolution.Width
-                                && c.Value.Height == resolution.Height
-                              select c.Key).FirstOrDefault();
+                    where c.Value.Width == resolution.Width
+                          && c.Value.Height == resolution.Height
+                    select c.Key).FirstOrDefault();
 
                 // If we found a matching preset, let's set it on the session
                 if (!string.IsNullOrEmpty(preset))
-                    session.SessionPreset = preset;
+                    _session.SessionPreset = preset;
             }
 
             var input = AVCaptureDeviceInput.FromDevice(captureDevice);
@@ -125,30 +126,32 @@ namespace CameraPreview.iOS
                 return false;
             }
             else
-                session.AddInput(input);
+                _session.AddInput(input);
 
 
-            var startedAVPreviewLayerAlloc = PerformanceCounter.Start();
+            var startedAvPreviewLayerAlloc = PerformanceCounter.Start();
 
-            previewLayer = new AVCaptureVideoPreviewLayer(session);
+            _previewLayer = new AVCaptureVideoPreviewLayer(_session);
 
-            PerformanceCounter.Stop(startedAVPreviewLayerAlloc, "Alloc AVCaptureVideoPreviewLayer took {0} ms.");
+            PerformanceCounter.Stop(startedAvPreviewLayerAlloc, "Alloc AVCaptureVideoPreviewLayer took {0} ms.");
 
             var perf2 = PerformanceCounter.Start();
 
 #if __UNIFIED__
-            previewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
+            _previewLayer.VideoGravity = AVLayerVideoGravity.ResizeAspectFill;
 #else
             previewLayer.LayerVideoGravity = AVLayerVideoGravity.ResizeAspectFill;
 #endif
-            previewLayer.Frame = new CGRect(0, 0, this.Frame.Width, this.Frame.Height);
-            previewLayer.Position = new CGPoint(this.Layer.Bounds.Width / 2, (this.Layer.Bounds.Height / 2));
+            _previewLayer.Frame = new CGRect(0, 0, this.Frame.Width, this.Frame.Height);
+            _previewLayer.Position = new CGPoint(this.Layer.Bounds.Width / 2, (this.Layer.Bounds.Height / 2));
 
-            layerView = new UIView(new CGRect(0, 0, this.Frame.Width, this.Frame.Height));
-            layerView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-            layerView.Layer.AddSublayer(previewLayer);
+            _layerView = new UIView(new CGRect(0, 0, this.Frame.Width, this.Frame.Height))
+            {
+                AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+            };
+            _layerView.Layer.AddSublayer(_previewLayer);
 
-            this.AddSubview(layerView);
+            this.AddSubview(_layerView);
 
             ResizePreview(UIApplication.SharedApplication.StatusBarOrientation);
 
@@ -157,38 +160,37 @@ namespace CameraPreview.iOS
 
             var perf3 = PerformanceCounter.Start();
 
-            session.StartRunning();
+            _session.StartRunning();
 
             PerformanceCounter.Stop(perf3, "PERF: session.StartRunning() took {0} ms");
 
             var perf4 = PerformanceCounter.Start();
 
-            var videoSettings = NSDictionary.FromObjectAndKey(new NSNumber((int)CVPixelFormatType.CV32BGRA),
+            var videoSettings = NSDictionary.FromObjectAndKey(new NSNumber((int) CVPixelFormatType.CV32BGRA),
                 CVPixelBuffer.PixelFormatTypeKey);
 
 
             // create a VideoDataOutput and add it to the sesion
-            output = new AVCaptureVideoDataOutput
+            _output = new AVCaptureVideoDataOutput
             {
                 WeakVideoSettings = videoSettings
             };
 
             // configure the output
-            queue = new DispatchQueue("CamerPreviewView"); // (Guid.NewGuid().ToString());
-            outputRecorder = new DefaultOutputRecorder(resultCallback);
-            output.AlwaysDiscardsLateVideoFrames = true;
-            output.SetSampleBufferDelegateQueue(outputRecorder, queue);
+            _queue = new DispatchQueue("CamerPreviewView"); // (Guid.NewGuid().ToString());
+            _outputRecorder = new DefaultOutputRecorder(_resultCallback);
+            _output.AlwaysDiscardsLateVideoFrames = true;
+            _output.SetSampleBufferDelegateQueue(_outputRecorder, _queue);
 
             PerformanceCounter.Stop(perf4, "PERF: SetupCamera Finished.  Took {0} ms.");
 
-            session.AddOutput(output);
+            _session.AddOutput(_output);
             //session.StartRunning ();
 
 
             var perf5 = PerformanceCounter.Start();
 
-            NSError err = null;
-            if (captureDevice.LockForConfiguration(out err))
+            if (captureDevice.LockForConfiguration(out var err))
             {
                 if (captureDevice.IsFocusModeSupported(AVCaptureFocusMode.ContinuousAutoFocus))
                     captureDevice.FocusMode = AVCaptureFocusMode.ContinuousAutoFocus;
@@ -236,28 +238,29 @@ namespace CameraPreview.iOS
 
         public void ResizePreview(UIInterfaceOrientation orientation)
         {
-            shouldRotatePreviewBuffer = orientation == UIInterfaceOrientation.Portrait || orientation == UIInterfaceOrientation.PortraitUpsideDown;
+            _shouldRotatePreviewBuffer = orientation == UIInterfaceOrientation.Portrait ||
+                                         orientation == UIInterfaceOrientation.PortraitUpsideDown;
 
-            if (previewLayer == null)
+            if (_previewLayer == null)
                 return;
 
-            previewLayer.Frame = new CGRect(0, 0, this.Frame.Width, this.Frame.Height);
+            _previewLayer.Frame = new CGRect(0, 0, this.Frame.Width, this.Frame.Height);
 
-            if (previewLayer.RespondsToSelector(new Selector("connection")) && previewLayer.Connection != null)
+            if (_previewLayer.RespondsToSelector(new Selector("connection")) && _previewLayer.Connection != null)
             {
                 switch (orientation)
                 {
                     case UIInterfaceOrientation.LandscapeLeft:
-                        previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.LandscapeLeft;
+                        _previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.LandscapeLeft;
                         break;
                     case UIInterfaceOrientation.LandscapeRight:
-                        previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.LandscapeRight;
+                        _previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.LandscapeRight;
                         break;
                     case UIInterfaceOrientation.Portrait:
-                        previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.Portrait;
+                        _previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.Portrait;
                         break;
                     case UIInterfaceOrientation.PortraitUpsideDown:
-                        previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.PortraitUpsideDown;
+                        _previewLayer.Connection.VideoOrientation = AVCaptureVideoOrientation.PortraitUpsideDown;
                         break;
                 }
             }
@@ -265,17 +268,17 @@ namespace CameraPreview.iOS
 
         public void StartScanning(Action<IScanResult> scanResultHandler, ScanningOptionsBase options = null)
         {
-            if (!stopped)
+            if (!_stopped)
                 return;
 
-            stopped = false;
+            _stopped = false;
 
             var perf = PerformanceCounter.Start();
 
             Setup(this.Frame);
 
             CameraPreviewSettings.Instance.SetScannerOptions(options);
-            this.resultCallback = scanResultHandler;
+            this._resultCallback = scanResultHandler;
 
             Logger.Log("StartScanning");
 
@@ -290,67 +293,72 @@ namespace CameraPreview.iOS
 
                 if (Runtime.Arch == Arch.SIMULATOR)
                 {
-                    var simView = new UIView(new CGRect(0, 0, this.Frame.Width, this.Frame.Height));
-                    simView.BackgroundColor = UIColor.LightGray;
-                    simView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+                    var simView = new UIView(new CGRect(0, 0, this.Frame.Width, this.Frame.Height))
+                    {
+                        BackgroundColor = UIColor.LightGray,
+                        AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+                    };
                     this.InsertSubview(simView, 0);
 
                 }
             });
 
-            if (!analyzing)
-                analyzing = true;
+            if (!_analyzing)
+                _analyzing = true;
 
             PerformanceCounter.Stop(perf, "PERF: StartScanning() Took {0} ms.");
 
             var evt = this.OnScannerSetupComplete;
-            if (evt != null)
-                evt();
+            evt?.Invoke();
         }
 
         public void StopScanning()
         {
-            if (stopped)
+            if (_stopped)
                 return;
 
             Console.WriteLine("Stopping...");
 
-            if (outputRecorder != null)
-                outputRecorder.CancelTokenSource.Cancel();
+            _outputRecorder?.CancelTokenSource.Cancel();
 
             //Try removing all existing outputs prior to closing the session
             try
             {
-                while (session.Outputs.Length > 0)
-                    session.RemoveOutput(session.Outputs[0]);
+                while (_session.Outputs.Length > 0)
+                    _session.RemoveOutput(_session.Outputs[0]);
             }
-            catch { }
+            catch (Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
+            }
 
             //Try to remove all existing inputs prior to closing the session
             try
             {
-                while (session.Inputs.Length > 0)
-                    session.RemoveInput(session.Inputs[0]);
+                while (_session.Inputs.Length > 0)
+                    _session.RemoveInput(_session.Inputs[0]);
             }
-            catch { }
+            catch (Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
+            }
 
-            if (session.Running)
-                session.StopRunning();
+            if (_session.Running)
+                _session.StopRunning();
 
-            stopped = true;
+            _stopped = true;
         }
 
         public void PauseAnalysis()
         {
-            analyzing = false;
+            _analyzing = false;
         }
 
         public void ResumeAnalysis()
         {
-            analyzing = true;
+            _analyzing = true;
         }
 
-        public bool IsAnalyzing { get { return analyzing; } }
-
+        public bool IsAnalyzing => _analyzing;
     }
 }

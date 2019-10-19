@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using AVFoundation;
 using CoreVideo;
 
@@ -8,6 +7,7 @@ namespace CameraPreview.iOS
     public interface IDecoder
     {
         IScanResult Decode(CVPixelBuffer pixelBuffer);
+
         void ScanningOptionsUpdate(ScanningOptionsBase options);
     }
 

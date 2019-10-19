@@ -1,7 +1,5 @@
 ﻿using System;
 using Android.Content;
-using Android.Graphics;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 
@@ -17,11 +15,13 @@ namespace CameraPreview.Droid
         {
             Init();
         }
+
         public CPSurfaceView(Context context, IAttributeSet attrs)
             : this(context, attrs, 0)
         {
 
         }
+
         public CPSurfaceView(Context context, IAttributeSet attrs, int defStyle)
             : base(context, attrs, defStyle)
         {
@@ -30,11 +30,10 @@ namespace CameraPreview.Droid
 
         private void Init()
         {
-            if (_cameraAnalyzer == null)
-                _cameraAnalyzer = new CameraAnalyzer(this);
+            if (CameraAnalyzer == null)
+                CameraAnalyzer = new CameraAnalyzer(this);
 
-            _cameraAnalyzer.ResumeAnalysis();
-
+            CameraAnalyzer.ResumeAnalysis();
         }
 
         public void SetAspectRatio(int width, int height)
@@ -49,15 +48,15 @@ namespace CameraPreview.Droid
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
-            int width = MeasureSpec.GetSize(widthMeasureSpec);
-            int height = MeasureSpec.GetSize(heightMeasureSpec);
+            var width = MeasureSpec.GetSize(widthMeasureSpec);
+            var height = MeasureSpec.GetSize(heightMeasureSpec);
             if (0 == _ratioWidth || 0 == _ratioHeight)
             {
                 SetMeasuredDimension(width, height);
             }
             else
             {
-                if (width < (float)height * _ratioWidth / (float)_ratioHeight)
+                if (width < (float) height * _ratioWidth / (float) _ratioHeight)
                 {
                     SetMeasuredDimension(width, width * _ratioHeight / _ratioWidth);
                 }
@@ -75,34 +74,30 @@ namespace CameraPreview.Droid
 
             CameraPreviewSettings.Instance.SetScannerOptions(options);
 
-            _cameraAnalyzer.ResultFound += (sender, result) =>
-            {
-                scanResultCallback?.Invoke(result);
-            };
-            _cameraAnalyzer.ResumeAnalysis();
+            CameraAnalyzer.ResultFound += (sender, result) => { scanResultCallback?.Invoke(result); };
+            CameraAnalyzer.ResumeAnalysis();
         }
 
         public void StopScanning()
         {
-            _cameraAnalyzer.ShutdownCamera();
+            CameraAnalyzer.ShutdownCamera();
             //fix Android 7 bug: camera freezes because surfacedestroyed function isn't always called correct, the old surfaceview was still visible.
             this.Visibility = ViewStates.Gone;
         }
 
         public void PauseAnalysis()
         {
-            _cameraAnalyzer.PauseAnalysis();
+            CameraAnalyzer.PauseAnalysis();
         }
 
         public void ResumeAnalysis()
         {
-            _cameraAnalyzer.ResumeAnalysis();
+            CameraAnalyzer.ResumeAnalysis();
         }
 
-        public bool IsAnalyzing => _cameraAnalyzer.IsAnalyzing;
+        public bool IsAnalyzing => CameraAnalyzer.IsAnalyzing;
 
-        private CameraAnalyzer _cameraAnalyzer;
-        public CameraAnalyzer CameraAnalyzer => _cameraAnalyzer;
+        public CameraAnalyzer CameraAnalyzer { get; private set; }
 
         protected override void OnAttachedToWindow()
         {

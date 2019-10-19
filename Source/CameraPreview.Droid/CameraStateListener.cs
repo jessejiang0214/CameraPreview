@@ -1,40 +1,39 @@
-﻿using System;
-using Android.Hardware.Camera2;
+﻿using Android.Hardware.Camera2;
 
 namespace CameraPreview.Droid
 {
     public class CameraStateListener : CameraDevice.StateCallback
     {
-        private readonly CameraController owner;
+        private readonly CameraController _owner;
 
         public CameraStateListener(CameraController owner)
         {
             if (owner == null)
                 throw new System.ArgumentNullException("owner");
-            this.owner = owner;
+            this._owner = owner;
         }
 
         public override void OnOpened(CameraDevice cameraDevice)
         {
             // This method is called when the camera is opened.  We start camera preview here.
-            owner.mCameraOpenCloseLock.Release();
-            owner.mCameraDevice = cameraDevice;
-            owner.CreateCameraPreviewSession();
+            _owner.mCameraOpenCloseLock.Release();
+            _owner.mCameraDevice = cameraDevice;
+            _owner.CreateCameraPreviewSession();
         }
 
         public override void OnDisconnected(CameraDevice cameraDevice)
         {
-            owner.mCameraOpenCloseLock.Release();
+            _owner.mCameraOpenCloseLock.Release();
             cameraDevice.Close();
-            owner.mCameraDevice = null;
+            _owner.mCameraDevice = null;
         }
 
         public override void OnError(CameraDevice cameraDevice, CameraError error)
         {
-            owner.mCameraOpenCloseLock.Release();
+            _owner.mCameraOpenCloseLock.Release();
             cameraDevice.Close();
-            owner.mCameraDevice = null;
-            if (owner == null)
+            _owner.mCameraDevice = null;
+            if (_owner == null)
                 return;
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-namespace CameraPreview
+﻿namespace CameraPreview
 {
     public interface ILogger
     {

@@ -6,8 +6,7 @@ namespace CameraPreview
 {
     public class PerformanceCounter
     {
-
-        static Dictionary<string, Stopwatch> counters = new Dictionary<string, Stopwatch>();
+        private static readonly Dictionary<string, Stopwatch> counters = new Dictionary<string, Stopwatch>();
 
         public static string Start()
         {

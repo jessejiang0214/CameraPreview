@@ -1,6 +1,4 @@
 ﻿using Android.Hardware.Camera2;
-using Java.IO;
-using Java.Lang;
 
 namespace CameraPreview.Droid
 {
@@ -15,11 +13,13 @@ namespace CameraPreview.Droid
             this.owner = owner;
         }
 
-        public override void OnCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result)
+        public override void OnCaptureCompleted(CameraCaptureSession session, CaptureRequest request,
+            TotalCaptureResult result)
         {
         }
 
-        public override void OnCaptureProgressed(CameraCaptureSession session, CaptureRequest request, CaptureResult partialResult)
+        public override void OnCaptureProgressed(CameraCaptureSession session, CaptureRequest request,
+            CaptureResult partialResult)
         {
         }
     }
