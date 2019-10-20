@@ -9,64 +9,63 @@ namespace CameraPreview.iOS
 {
     public class DefaultOutputRecorder : AVCaptureVideoDataOutputSampleBufferDelegate, IOutputRecorder
     {
-        readonly Action<IScanResult> _resultCallback;
-        public DefaultOutputRecorder(Action<IScanResult> resultCallback) : base()
+        private readonly Action<IScanResult> _resultCallback;
+
+        public DefaultOutputRecorder(Action<IScanResult> resultCallback)
         {
             _resultCallback = resultCallback;
         }
 
-        DateTime lastAnalysis = DateTime.MinValue;
-        volatile bool working = false;
-        volatile bool wasScanned = false;
+        private DateTime _lastAnalysis = DateTime.MinValue;
+        private volatile bool _working;
+        private volatile bool _wasScanned;
 
         [Export("captureOutput:didDropSampleBuffer:fromConnection:")]
-        public override void DidDropSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection)
+        public override void DidDropSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer,
+            AVCaptureConnection connection)
         {
             Logger.Log("Dropped Sample Buffer");
         }
 
         public CancellationTokenSource CancelTokenSource { get; set; } = new CancellationTokenSource();
 
-
-        public override void DidOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection)
+        public override void DidOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer,
+            AVCaptureConnection connection)
         {
-            var msSinceLastPreview = (DateTime.UtcNow - lastAnalysis).TotalMilliseconds;
+            var msSinceLastPreview = (DateTime.UtcNow - _lastAnalysis).TotalMilliseconds;
             var scannerOptions = CameraPreviewSettings.Instance.ScannerOptions;
             if (msSinceLastPreview < scannerOptions.DelayBetweenAnalyzingFrames
-                || (wasScanned && msSinceLastPreview < scannerOptions.DelayBetweenContinuousScans)
-                || working
+                || (_wasScanned && msSinceLastPreview < scannerOptions.DelayBetweenContinuousScans)
+                || _working
                 || CancelTokenSource.IsCancellationRequested)
             {
-
                 if (msSinceLastPreview < scannerOptions.DelayBetweenAnalyzingFrames)
                     Logger.Log("Too soon between frames", LogLevel.Detail);
-                if (wasScanned && msSinceLastPreview < scannerOptions.DelayBetweenContinuousScans)
+                if (_wasScanned && msSinceLastPreview < scannerOptions.DelayBetweenContinuousScans)
                     Logger.Log("Too soon since last scan", LogLevel.Detail);
 
-                if (sampleBuffer != null)
-                {
-                    sampleBuffer.Dispose();
-                    sampleBuffer = null;
-                }
+                sampleBuffer?.Dispose();
                 return;
             }
 
-            wasScanned = false;
-            working = true;
-            lastAnalysis = DateTime.UtcNow;
+            _wasScanned = false;
+            _working = true;
+            _lastAnalysis = DateTime.UtcNow;
 
             try
             {
                 // Get the CoreVideo image
                 using (var pixelBuffer = sampleBuffer.GetImageBuffer() as CVPixelBuffer)
                 {
+                    if (pixelBuffer == null) return;
+
                     // Lock the base address
                     pixelBuffer.Lock(CVPixelBufferLock.ReadOnly); // MAYBE NEEDS READ/WRITE
-
-                    IScanResult result = CameraPreviewSettings.Instance.Decoder.Decode(pixelBuffer);
+                    // https://stackoverflow.com/questions/34569750/get-pixel-value-from-cvpixelbufferref-in-swift/42303821
+                    var result = CameraPreviewSettings.Instance.Decoder.Decode(pixelBuffer);
                     _resultCallback?.Invoke(result);
                     if (result.Success)
-                        wasScanned = true;
+                        _wasScanned = true;
 
                     pixelBuffer.Unlock(CVPixelBufferLock.ReadOnly);
                 }
@@ -78,8 +77,6 @@ namespace CameraPreview.iOS
                 // delivering frames. 
                 //  
                 sampleBuffer.Dispose();
-                sampleBuffer = null;
-
             }
             catch (Exception e)
             {
@@ -87,10 +84,8 @@ namespace CameraPreview.iOS
             }
             finally
             {
-                working = false;
+                _working = false;
             }
-
         }
     }
-
 }

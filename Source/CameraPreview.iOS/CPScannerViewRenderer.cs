@@ -1,39 +1,40 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using CameraPreview;
 using CameraPreview.iOS;
-using Foundation;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(ScannerView), typeof(CPScannerViewRenderer))]
+
 namespace CameraPreview.iOS
 {
-    public class CPScannerViewRenderer : ViewRenderer<ScannerView, CPScannerView>
+    public class CPScannerViewRenderer : ViewRenderer<ScannerView, CpScannerView>
     {
-        protected ScannerView formsView;
-        protected CPScannerView nativeView;
+        protected ScannerView FormsView;
+        protected CpScannerView PlatformView;
 
         protected override void OnElementChanged(ElementChangedEventArgs<ScannerView> e)
         {
             AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 
-            formsView = Element;
+            FormsView = Element;
 
-            if (nativeView == null)
+            if (PlatformView == null)
             {
 
-                nativeView = new CPScannerView();
-                nativeView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+                PlatformView = new CpScannerView
+                {
+                    AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+                };
 
-                base.SetNativeControl(nativeView);
+                base.SetNativeControl(PlatformView);
 
-                if (formsView.IsScanning)
-                    nativeView.StartScanning(formsView.RaiseScanResult, formsView.Options);
+                if (FormsView.IsScanning)
+                    PlatformView.StartScanning(FormsView.RaiseScanResult, FormsView.Options);
 
-                if (!formsView.IsAnalyzing)
-                    nativeView.PauseAnalysis();
+                if (!FormsView.IsAnalyzing)
+                    PlatformView.PauseAnalysis();
             }
 
             base.OnElementChanged(e);
@@ -43,22 +44,22 @@ namespace CameraPreview.iOS
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (nativeView == null)
+            if (PlatformView == null)
                 return;
 
             switch (e.PropertyName)
             {
                 case nameof(ScannerView.IsScanning):
-                    if (formsView.IsScanning)
-                        nativeView.StartScanning(formsView.RaiseScanResult, formsView.Options);
+                    if (FormsView.IsScanning)
+                        PlatformView.StartScanning(FormsView.RaiseScanResult, FormsView.Options);
                     else
-                        nativeView.StopScanning();
+                        PlatformView.StopScanning();
                     break;
                 case nameof(ScannerView.IsAnalyzing):
-                    if (formsView.IsAnalyzing)
-                        nativeView.ResumeAnalysis();
+                    if (FormsView.IsAnalyzing)
+                        PlatformView.ResumeAnalysis();
                     else
-                        nativeView.PauseAnalysis();
+                        PlatformView.PauseAnalysis();
                     break;
             }
         }
@@ -73,7 +74,7 @@ namespace CameraPreview.iOS
                 o = ViewController.InterfaceOrientation;
 
             // Tell the native view to rotate
-            nativeView.DidRotate(o);
+            PlatformView.DidRotate(o);
         }
     }
 }

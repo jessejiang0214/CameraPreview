@@ -1,9 +1,4 @@
-﻿using System;
-using System.Threading;
-using AVFoundation;
-using CoreMedia;
-using CoreVideo;
-using Foundation;
+﻿using CoreVideo;
 
 namespace CameraPreview.iOS
 {

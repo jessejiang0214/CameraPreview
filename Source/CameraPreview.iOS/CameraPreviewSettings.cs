@@ -1,42 +1,30 @@
-﻿using System;
-namespace CameraPreview.iOS
+﻿namespace CameraPreview.iOS
 {
     public class CameraPreviewSettings
     {
-        private static CameraPreviewSettings instance;
-        private ScanningOptionsBase _scanningOptions = ScanningOptionsBase.Default;
-        protected CameraPreviewSettings() { }
+        private static CameraPreviewSettings _instance;
 
-        public static CameraPreviewSettings Instance
+        protected CameraPreviewSettings()
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new CameraPreviewSettings();
-                }
-                return instance;
-            }
         }
+
+        public static CameraPreviewSettings Instance => _instance ?? (_instance = new CameraPreviewSettings());
 
         public IDecoder Decoder { get; set; }
 
-        public ScanningOptionsBase ScannerOptions => _scanningOptions;
+        public ScanningOptionsBase ScannerOptions { get; private set; } = ScanningOptionsBase.Default;
 
         public virtual void SetScannerOptions(ScanningOptionsBase value)
         {
             if (value == null)
                 return;
-            _scanningOptions = value;
+            ScannerOptions = value;
             Decoder.ScanningOptionsUpdate(value);
         }
 
         public void Init(IDecoder decoder)
         {
-            if (decoder == null)
-                Decoder = new DefaultDecoderBase();
-            else
-                Decoder = decoder;
+            Decoder = decoder ?? new DefaultDecoderBase();
         }
     }
 }

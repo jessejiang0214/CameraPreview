@@ -1,9 +1,9 @@
-﻿using System;
-namespace CameraPreview
+﻿namespace CameraPreview
 {
     public interface IScanResult
     {
         long Timestamp { get; }
+
         bool Success { get; }
     }
 }

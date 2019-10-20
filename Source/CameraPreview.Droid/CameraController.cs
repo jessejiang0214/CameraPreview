@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Content.Res;
 using Android.Graphics;
 using Android.Hardware.Camera2;
 using Android.Hardware.Camera2.Params;
@@ -57,7 +54,7 @@ namespace CameraPreview.Droid
             _cameraStateListener = new CameraStateListener(this);
             CaptureCallback = new CameraCaptureListener(this);
             _windowManager = _context
-               .GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+                .GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
             StartBackgroundThread();
         }
 
@@ -69,16 +66,18 @@ namespace CameraPreview.Droid
             {
                 throw new RuntimeException("Don't have access to Camera!");
             }
+
             SetUpCameraOutputs(width, height);
             ConfigureTransform(width, height);
 
-            var manager = (CameraManager)_context.GetSystemService(Context.CameraService);
+            var manager = (CameraManager) _context.GetSystemService(Context.CameraService);
             try
             {
                 if (!mCameraOpenCloseLock.TryAcquire(2500, TimeUnit.Milliseconds))
                 {
                     throw new RuntimeException("Time out waiting to lock camera opening.");
                 }
+
                 manager.OpenCamera(_cameraId, _cameraStateListener, BackgroundHandler);
             }
             catch (CameraAccessException e)
@@ -91,42 +90,43 @@ namespace CameraPreview.Droid
             }
         }
 
-
         private void SetUpCameraOutputs(int width, int height)
         {
-            var manager = (CameraManager)_context.GetSystemService(Context.CameraService);
+            var manager = (CameraManager) _context.GetSystemService(Context.CameraService);
             try
             {
                 for (var i = 0; i < manager.GetCameraIdList().Length; i++)
                 {
                     var cameraId = manager.GetCameraIdList()[i];
-                    CameraCharacteristics characteristics = manager.GetCameraCharacteristics(cameraId);
+                    var characteristics = manager.GetCameraCharacteristics(cameraId);
 
                     // We don't use a front facing camera in this sample.
-                    var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);
-                    if (facing != null && facing == (Integer.ValueOf((int)LensFacing.Front)))
+                    var facing = (Integer) characteristics.Get(CameraCharacteristics.LensFacing);
+                    if (facing != null && facing == (Integer.ValueOf((int) LensFacing.Front)))
                     {
                         continue;
                     }
 
-                    var map = (StreamConfigurationMap)characteristics.Get(CameraCharacteristics.ScalerStreamConfigurationMap);
+                    var map = (StreamConfigurationMap) characteristics.Get(CameraCharacteristics
+                        .ScalerStreamConfigurationMap);
                     if (map == null)
                     {
                         continue;
                     }
 
                     // For still image captures, we use the largest available size.
-                    Size largest = (Size)Collections.Max(Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
+                    var largest = (Size) Collections.Max(Arrays.AsList(map.GetOutputSizes((int) ImageFormatType.Jpeg)),
                         new CompareSizesByArea());
 
-                    _imageReader = ImageReader.NewInstance(largest.Width, largest.Height, ImageFormatType.Jpeg, /*maxImages*/2);
+                    _imageReader = ImageReader.NewInstance(largest.Width, largest.Height,
+                        ImageFormatType.Jpeg, /*maxImages*/2);
 
                     // Find out if we need to swap dimension to get the preview size relative to sensor
                     // coordinate.
                     var displayRotation = _windowManager.DefaultDisplay.Rotation;
                     //noinspection ConstantConditions
-                    _sensorOrientation = (int)characteristics.Get(CameraCharacteristics.SensorOrientation);
-                    bool swappedDimensions = false;
+                    _sensorOrientation = (int) characteristics.Get(CameraCharacteristics.SensorOrientation);
+                    var swappedDimensions = false;
                     switch (displayRotation)
                     {
                         case SurfaceOrientation.Rotation0:
@@ -135,6 +135,7 @@ namespace CameraPreview.Droid
                             {
                                 swappedDimensions = true;
                             }
+
                             break;
                         case SurfaceOrientation.Rotation90:
                         case SurfaceOrientation.Rotation270:
@@ -142,13 +143,14 @@ namespace CameraPreview.Droid
                             {
                                 swappedDimensions = true;
                             }
+
                             break;
                         default:
                             //Log.Error(TAG, "Display rotation is invalid: " + displayRotation);
                             break;
                     }
 
-                    Point displaySize = new Point();
+                    var displaySize = new Point();
                     _windowManager.DefaultDisplay.GetSize(displaySize);
                     var rotatedPreviewWidth = width;
                     var rotatedPreviewHeight = height;
@@ -192,14 +194,14 @@ namespace CameraPreview.Droid
                     }
 
                     // Check if the flash is supported.
-                    var available = (Boolean)characteristics.Get(CameraCharacteristics.FlashInfoAvailable);
+                    var available = (Boolean) characteristics.Get(CameraCharacteristics.FlashInfoAvailable);
                     if (available == null)
                     {
                         _flashSupported = false;
                     }
                     else
                     {
-                        _flashSupported = (bool)available;
+                        _flashSupported = (bool) available;
                     }
 
                     _cameraId = cameraId;
@@ -220,24 +222,23 @@ namespace CameraPreview.Droid
         }
 
         private static Size ChooseOptimalSize(Size[] choices,
-                                                int textureViewWidth,
-                                                int textureViewHeight,
-                                                int maxWidth,
-                                                int maxHeight,
-                                                Size aspectRatio)
+            int textureViewWidth,
+            int textureViewHeight,
+            int maxWidth,
+            int maxHeight,
+            Size aspectRatio)
         {
             // Collect the supported resolutions that are at least as big as the preview Surface
             var bigEnough = new List<Size>();
             // Collect the supported resolutions that are smaller than the preview Surface
             var notBigEnough = new List<Size>();
-            int w = aspectRatio.Width;
-            int h = aspectRatio.Height;
+            var w = aspectRatio.Width;
+            var h = aspectRatio.Height;
 
-            for (var i = 0; i < choices.Length; i++)
+            foreach (var option in choices)
             {
-                Size option = choices[i];
                 if ((option.Width <= maxWidth) && (option.Height <= maxHeight) &&
-                       option.Height == option.Width * h / w)
+                    option.Height == option.Width * h / w)
                 {
                     if (option.Width >= textureViewWidth &&
                         option.Height >= textureViewHeight)
@@ -255,11 +256,11 @@ namespace CameraPreview.Droid
             // largest of those not big enough.
             if (bigEnough.Count > 0)
             {
-                return (Size)Collections.Min(bigEnough, new CompareSizesByArea());
+                return (Size) Collections.Min(bigEnough, new CompareSizesByArea());
             }
             else if (notBigEnough.Count > 0)
             {
-                return (Size)Collections.Max(notBigEnough, new CompareSizesByArea());
+                return (Size) Collections.Max(notBigEnough, new CompareSizesByArea());
             }
             else
             {
@@ -276,26 +277,29 @@ namespace CameraPreview.Droid
             {
                 return;
             }
+
             var windowManager = _context
-               .GetSystemService(Context.WindowService).JavaCast<IWindowManager>(); ;
-            var rotation = (int)windowManager.DefaultDisplay.Rotation;
-            Matrix matrix = new Matrix();
-            RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
-            RectF bufferRect = new RectF(0, 0, _previewSize.Height, _previewSize.Width);
-            float centerX = viewRect.CenterX();
-            float centerY = viewRect.CenterY();
-            if ((int)SurfaceOrientation.Rotation90 == rotation || (int)SurfaceOrientation.Rotation270 == rotation)
+                .GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+            ;
+            var rotation = (int) windowManager.DefaultDisplay.Rotation;
+            var matrix = new Matrix();
+            var viewRect = new RectF(0, 0, viewWidth, viewHeight);
+            var bufferRect = new RectF(0, 0, _previewSize.Height, _previewSize.Width);
+            var centerX = viewRect.CenterX();
+            var centerY = viewRect.CenterY();
+            if ((int) SurfaceOrientation.Rotation90 == rotation || (int) SurfaceOrientation.Rotation270 == rotation)
             {
                 bufferRect.Offset(centerX - bufferRect.CenterX(), centerY - bufferRect.CenterY());
                 matrix.SetRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.Fill);
-                float scale = Math.Max((float)viewHeight / _previewSize.Height, (float)viewWidth / _previewSize.Width);
+                var scale = Math.Max((float) viewHeight / _previewSize.Height, (float) viewWidth / _previewSize.Width);
                 matrix.PostScale(scale, scale, centerX, centerY);
                 matrix.PostRotate(90 * (rotation - 2), centerX, centerY);
             }
-            else if ((int)SurfaceOrientation.Rotation180 == rotation)
+            else if ((int) SurfaceOrientation.Rotation180 == rotation)
             {
                 matrix.PostRotate(180, centerX, centerY);
             }
+
             _surfaceView.SetTransform(matrix);
         }
 
@@ -309,16 +313,19 @@ namespace CameraPreview.Droid
                     CaptureSession.Close();
                     CaptureSession = null;
                 }
+
                 if (null != mCameraDevice)
                 {
                     mCameraDevice.Close();
                     mCameraDevice = null;
                 }
+
                 if (null != _imageReader)
                 {
                     _imageReader.Close();
                     _imageReader = null;
                 }
+
                 StopBackgroundThread();
             }
             catch (InterruptedException e)
@@ -355,12 +362,12 @@ namespace CameraPreview.Droid
             }
         }
 
-
         private class ImageDecoder : Java.Lang.Object, IRunnable
         {
             private readonly IDecoder _decoder;
             private readonly Handler _backgroundHandler;
-            private CPSurfaceView _surfaceView;
+            private readonly CPSurfaceView _surfaceView;
+
             public ImageDecoder(Handler backgroundHandler, CPSurfaceView surfaceView)
             {
                 _decoder = CameraPreviewSettings.Instance.Decoder;
@@ -390,6 +397,7 @@ namespace CameraPreview.Droid
                     bitmap?.Recycle();
                     _decoder.HandleExceptionFromProcessImage?.Invoke(ex);
                 }
+
                 _backgroundHandler.Post(new ImageDecoder(_backgroundHandler, _surfaceView));
             }
         }
@@ -398,7 +406,7 @@ namespace CameraPreview.Droid
         {
             try
             {
-                SurfaceTexture texture = _surfaceView.SurfaceTexture;
+                var texture = _surfaceView.SurfaceTexture;
                 if (texture == null)
                 {
                     throw new IllegalStateException("texture is null");
@@ -408,15 +416,14 @@ namespace CameraPreview.Droid
                 texture.SetDefaultBufferSize(_previewSize.Width, _previewSize.Height);
 
                 // This is the output Surface we need to start preview.
-                Surface surface = new Surface(texture);
+                var surface = new Surface(texture);
 
                 // We set up a CaptureRequest.Builder with the output Surface.
                 PreviewRequestBuilder = mCameraDevice.CreateCaptureRequest(CameraTemplate.Preview);
                 PreviewRequestBuilder.AddTarget(surface);
 
                 // Here, we create a CameraCaptureSession for camera preview.
-                List<Surface> surfaces = new List<Surface>();
-                surfaces.Add(surface);
+                var surfaces = new List<Surface> {surface};
                 mCameraDevice.CreateCaptureSession(surfaces, new CameraCaptureSessionCallback(this), null);
 
                 BackgroundHandler.Post(new ImageDecoder(BackgroundHandler, _surfaceView));
@@ -428,12 +435,11 @@ namespace CameraPreview.Droid
             }
         }
 
-
         public void SetAutoFlash(CaptureRequest.Builder requestBuilder)
         {
             if (_flashSupported)
             {
-                requestBuilder.Set(CaptureRequest.ControlAeMode, (int)ControlAEMode.OnAutoFlash);
+                requestBuilder.Set(CaptureRequest.ControlAeMode, (int) ControlAEMode.OnAutoFlash);
             }
         }
     }

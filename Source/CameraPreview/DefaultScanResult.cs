@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace CameraPreview
 {
     public class DefaultScanResult : IScanResult

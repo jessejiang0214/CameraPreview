@@ -1,5 +1,4 @@
-﻿using System;
-using CameraPreview;
+﻿using CameraPreview;
 
 namespace ZXing.Net.Xamarin.Forms
 {

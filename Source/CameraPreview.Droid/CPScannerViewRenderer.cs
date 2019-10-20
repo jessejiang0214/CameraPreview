@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using Android.Content;
 using Android.Views;
 using CameraPreview;
@@ -9,85 +7,85 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(ScannerView), typeof(CPScannerViewRenderer))]
+
 namespace CameraPreview.Droid
 {
     public class CPScannerViewRenderer : ViewRenderer<ScannerView, CPSurfaceView>
     {
-
         public CPScannerViewRenderer(Context context) : base(context)
         {
         }
 
-        protected ScannerView formsView;
+        protected ScannerView FormsView;
+        protected CPSurfaceView PlatformView;
+        private CameraAnalyzer _cameraAnalyzer;
 
-        protected CPSurfaceView nativeSurface;
-        CameraAnalyzer _cameraAnalyzer;
         protected override void OnElementChanged(ElementChangedEventArgs<ScannerView> e)
         {
             base.OnElementChanged(e);
+            FormsView = Element;
 
-            formsView = Element;
-
-            if (nativeSurface == null)
+            if (PlatformView == null)
             {
+                PlatformView = new CPSurfaceView(this.Context)
+                {
+                    LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent)
+                };
+                _cameraAnalyzer = PlatformView.CameraAnalyzer;
 
-                nativeSurface = new CPSurfaceView(this.Context);
-                nativeSurface.LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
-                _cameraAnalyzer = nativeSurface.CameraAnalyzer;
+                PlatformView.SurfaceTextureAvailable += NativeSurface_SurfaceTextureAvailable;
+                PlatformView.SurfaceTextureDestroyed += NativeSurface_SurfaceTextureDestroyed;
+                PlatformView.SurfaceTextureSizeChanged += NativeSurface_SurfaceTextureSizeChanged;
+                base.SetNativeControl(PlatformView);
 
-                nativeSurface.SurfaceTextureAvailable += NativeSurface_SurfaceTextureAvailable;
-                nativeSurface.SurfaceTextureDestroyed += NativeSurface_SurfaceTextureDestroyed;
-                nativeSurface.SurfaceTextureSizeChanged += NativeSurface_SurfaceTextureSizeChanged;
-                base.SetNativeControl(nativeSurface);
+                if (FormsView.IsScanning)
+                    PlatformView.StartScanning(FormsView.RaiseScanResult, FormsView.Options);
 
-                if (formsView.IsScanning)
-                    nativeSurface.StartScanning(formsView.RaiseScanResult, formsView.Options);
-
-                if (!formsView.IsAnalyzing)
-                    nativeSurface.PauseAnalysis();
+                if (!FormsView.IsAnalyzing)
+                    PlatformView.PauseAnalysis();
             }
         }
 
-        void NativeSurface_SurfaceTextureAvailable(object sender, TextureView.SurfaceTextureAvailableEventArgs e)
+        private void NativeSurface_SurfaceTextureAvailable(object sender,
+            TextureView.SurfaceTextureAvailableEventArgs e)
         {
             _cameraAnalyzer.SetupCamera(e.Width, e.Height);
         }
 
-        void NativeSurface_SurfaceTextureDestroyed(object sender, TextureView.SurfaceTextureDestroyedEventArgs e)
+        private void NativeSurface_SurfaceTextureDestroyed(object sender,
+            TextureView.SurfaceTextureDestroyedEventArgs e)
         {
             _cameraAnalyzer.ShutdownCamera();
         }
 
-        void NativeSurface_SurfaceTextureSizeChanged(object sender, TextureView.SurfaceTextureSizeChangedEventArgs e)
+        private void NativeSurface_SurfaceTextureSizeChanged(object sender,
+            TextureView.SurfaceTextureSizeChangedEventArgs e)
         {
             _cameraAnalyzer.ConfigureTransform(e.Width, e.Height);
         }
 
-
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-
-            if (nativeSurface == null)
+            if (PlatformView == null)
                 return;
 
             switch (e.PropertyName)
             {
                 case nameof(ScannerView.IsScanning):
-                    if (formsView.IsScanning)
-                        nativeSurface.StartScanning(formsView.RaiseScanResult, formsView.Options);
+                    if (FormsView.IsScanning)
+                        PlatformView.StartScanning(FormsView.RaiseScanResult, FormsView.Options);
                     else
-                        nativeSurface.StopScanning();
+                        PlatformView.StopScanning();
                     break;
+
                 case nameof(ScannerView.IsAnalyzing):
-                    if (formsView.IsAnalyzing)
-                        nativeSurface.ResumeAnalysis();
+                    if (FormsView.IsAnalyzing)
+                        PlatformView.ResumeAnalysis();
                     else
-                        nativeSurface.PauseAnalysis();
+                        PlatformView.PauseAnalysis();
                     break;
             }
         }
     }
 }
-
-

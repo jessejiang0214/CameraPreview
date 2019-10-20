@@ -1,42 +1,30 @@
-﻿using System;
-namespace CameraPreview.Droid
+﻿namespace CameraPreview.Droid
 {
     public class CameraPreviewSettings
     {
-        private static CameraPreviewSettings instance;
-        private ScanningOptionsBase _scanningOptions = ScanningOptionsBase.Default;
-        private CameraPreviewSettings() { }
+        private static CameraPreviewSettings _instance;
 
-        public static CameraPreviewSettings Instance
+        private CameraPreviewSettings()
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new CameraPreviewSettings();
-                }
-                return instance;
-            }
         }
+
+        public static CameraPreviewSettings Instance => _instance ?? (_instance = new CameraPreviewSettings());
 
         public IDecoder Decoder { get; set; }
 
-        public ScanningOptionsBase ScannerOptions => _scanningOptions;
+        public ScanningOptionsBase ScannerOptions { get; private set; } = ScanningOptionsBase.Default;
 
         public virtual void SetScannerOptions(ScanningOptionsBase value)
         {
             if (value == null)
                 return;
-            _scanningOptions = value;
+            ScannerOptions = value;
             Decoder.ScanningOptionsUpdate(value);
         }
 
         public virtual void Init(IDecoder decoder)
         {
-            if (decoder == null)
-                Decoder = new DefaultDecoderBase();
-            else
-                Decoder = decoder;
+            Decoder = decoder ?? new DefaultDecoderBase();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using CameraPreview.iOS;
+﻿using CameraPreview.iOS;
 
 namespace ZXing.Net.iOS
 {

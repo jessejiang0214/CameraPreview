@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CameraPreview
 {
@@ -26,10 +25,7 @@ namespace CameraPreview
         public int DelayBetweenAnalyzingFrames { get; set; }
         public int InitialDelayBeforeAnalyzingFrames { get; set; }
 
-        public static ScanningOptionsBase Default
-        {
-            get { return new ScanningOptionsBase(); }
-        }
+        public static ScanningOptionsBase Default => new ScanningOptionsBase();
 
         public CameraResolution GetResolution(List<CameraResolution> availableResolutions)
         {

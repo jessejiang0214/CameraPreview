@@ -1,5 +1,4 @@
-﻿using System;
-using CameraPreview.Droid;
+﻿using CameraPreview.Droid;
 
 namespace ZXing.Net.Droid
 {
