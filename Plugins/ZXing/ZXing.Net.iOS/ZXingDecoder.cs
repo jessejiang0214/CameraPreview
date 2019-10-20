@@ -9,6 +9,7 @@ namespace ZXing.Net.iOS
     public class ZXingDecoder : DefaultDecoderBase
     {
         BarcodeReader _reader;
+
         public ZXingDecoder() : base()
         {
             _reader = new BarcodeReader();
@@ -19,10 +20,10 @@ namespace ZXing.Net.iOS
             var decoder = PerformanceCounter.Start();
             unsafe
             {
-                var rawData = (byte*)pixelBuffer.BaseAddress.ToPointer();
-                int rawDatalen = (int)(pixelBuffer.Height * pixelBuffer.Width * 4);
-                int width = (int)pixelBuffer.Width;
-                int height = (int)pixelBuffer.Height;
+                var rawData = (byte*) pixelBuffer.BaseAddress.ToPointer();
+                int rawDatalen = (int) (pixelBuffer.Height * pixelBuffer.Width * 4);
+                int width = (int) pixelBuffer.Width;
+                int height = (int) pixelBuffer.Height;
                 var luminanceSource = new CVPixelBufferBGRA32LuminanceSource(rawData, rawDatalen, width, height);
                 var res = _reader.Decode(luminanceSource);
                 var result = new ZXingResult();
@@ -37,6 +38,7 @@ namespace ZXing.Net.iOS
                     result.Timestamp = res.Timestamp;
                     result.Text = res.Text;
                 }
+
                 PerformanceCounter.Stop(decoder, "ZXing Decoder take {0} ms.");
                 return result;
             }

@@ -8,7 +8,7 @@ namespace ZXing.Net.Droid
 {
     public class ZXingDecoder : DefaultDecoderBase
     {
-        BarcodeReader _reader;
+        private readonly BarcodeReader _reader;
 
         public ZXingDecoder()
         {

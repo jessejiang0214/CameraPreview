@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using CameraPreview;
+﻿using CameraPreview;
 
 namespace ZXing.Net.Xamarin.Forms
 {
