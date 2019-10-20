@@ -61,6 +61,7 @@ namespace CameraPreview.iOS
 
                     // Lock the base address
                     pixelBuffer.Lock(CVPixelBufferLock.ReadOnly); // MAYBE NEEDS READ/WRITE
+                    // https://stackoverflow.com/questions/34569750/get-pixel-value-from-cvpixelbufferref-in-swift/42303821
                     var result = CameraPreviewSettings.Instance.Decoder.Decode(pixelBuffer);
                     _resultCallback?.Invoke(result);
                     if (result.Success)

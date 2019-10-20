@@ -3,13 +3,13 @@ using Android.Graphics;
 using CameraPreview;
 using CameraPreview.Droid;
 using ZXing.Net.Xamarin.Forms;
-using ZXing;
 
 namespace ZXing.Net.Droid
 {
     public class ZXingDecoder : DefaultDecoderBase
     {
         BarcodeReader _reader;
+
         public ZXingDecoder()
         {
             _reader = new BarcodeReader();
@@ -31,6 +31,7 @@ namespace ZXing.Net.Droid
                 result.Timestamp = res.Timestamp;
                 result.Text = res.Text;
             }
+
             PerformanceCounter.Stop(decoder, "ZXing Decoder take {0} ms.");
             return result;
         }
