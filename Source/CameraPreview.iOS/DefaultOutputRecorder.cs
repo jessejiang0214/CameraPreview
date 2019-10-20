@@ -17,8 +17,8 @@ namespace CameraPreview.iOS
         }
 
         private DateTime _lastAnalysis = DateTime.MinValue;
-        private volatile bool _working = false;
-        private volatile bool _wasScanned = false;
+        private volatile bool _working;
+        private volatile bool _wasScanned;
 
         [Export("captureOutput:didDropSampleBuffer:fromConnection:")]
         public override void DidDropSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer,
@@ -28,7 +28,6 @@ namespace CameraPreview.iOS
         }
 
         public CancellationTokenSource CancelTokenSource { get; set; } = new CancellationTokenSource();
-
 
         public override void DidOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer,
             AVCaptureConnection connection)
@@ -40,14 +39,12 @@ namespace CameraPreview.iOS
                 || _working
                 || CancelTokenSource.IsCancellationRequested)
             {
-
                 if (msSinceLastPreview < scannerOptions.DelayBetweenAnalyzingFrames)
                     Logger.Log("Too soon between frames", LogLevel.Detail);
                 if (_wasScanned && msSinceLastPreview < scannerOptions.DelayBetweenContinuousScans)
                     Logger.Log("Too soon since last scan", LogLevel.Detail);
 
                 sampleBuffer?.Dispose();
-
                 return;
             }
 
