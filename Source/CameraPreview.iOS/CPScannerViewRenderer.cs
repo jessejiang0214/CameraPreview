@@ -29,10 +29,10 @@ namespace CameraPreview.iOS
 
                 base.SetNativeControl(nativeView);
 
-                if (formsView.IsScanning)
+                if (!formsView.IsScanning)
                     nativeView.StartScanning(formsView.RaiseScanResult, formsView.Options);
 
-                if (!formsView.IsAnalyzing)
+                if (formsView.IsAnalyzing)
                     nativeView.PauseAnalysis();
             }
 

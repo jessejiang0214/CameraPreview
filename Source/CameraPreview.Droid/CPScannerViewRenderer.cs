@@ -40,10 +40,10 @@ namespace CameraPreview.Droid
                 nativeSurface.SurfaceTextureSizeChanged += NativeSurface_SurfaceTextureSizeChanged;
                 base.SetNativeControl(nativeSurface);
 
-                if (formsView.IsScanning)
+                if (!formsView.IsScanning)
                     nativeSurface.StartScanning(formsView.RaiseScanResult, formsView.Options);
 
-                if (!formsView.IsAnalyzing)
+                if (formsView.IsAnalyzing)
                     nativeSurface.PauseAnalysis();
             }
         }
