@@ -104,7 +104,13 @@ namespace CameraPreview.Droid
 
                     // We don't use a front facing camera in this sample.
                     var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);
-                    if (facing != null && facing == (Integer.ValueOf((int)LensFacing.Front)))
+                    if (facing != null && facing == (Integer.ValueOf((int)LensFacing.Front)) &&
+                        !CameraPreviewSettings.Instance.ScannerOptions.UseFrontCameraIfAvailable.GetValueOrDefault())
+                    {
+                        continue;
+                    }
+                    if (CameraPreviewSettings.Instance.ScannerOptions.UseFrontCameraIfAvailable.GetValueOrDefault() &&
+                        facing != null && facing != (Integer.ValueOf((int)LensFacing.Front)))
                     {
                         continue;
                     }
